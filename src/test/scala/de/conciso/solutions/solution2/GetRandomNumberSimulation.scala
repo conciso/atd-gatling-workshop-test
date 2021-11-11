@@ -1,4 +1,4 @@
-package de.conciso.solutions.solution1
+package de.conciso.solutions.solution2
 
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
@@ -17,16 +17,13 @@ class GetRandomNumberSimulation extends Simulation {
     .userAgentHeader("Gatling")
 
   val scn: ScenarioBuilder = scenario("Request Random Number")
-    .repeat(10) {
-      exec(
+    .exec(
         http("Simple Get")
           .get("/test")
       )
-      .pause(1.second)
-    }
 
   setUp(
     scn.inject(
-      atOnceUsers(1)
+      rampUsers(5).during(10.seconds)
     ).protocols(httpProtocol))
 }

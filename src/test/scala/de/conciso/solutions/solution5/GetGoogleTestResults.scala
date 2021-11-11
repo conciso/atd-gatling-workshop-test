@@ -1,4 +1,4 @@
-package de.conciso.solutions.solution1
+package de.conciso.solutions.solution5
 
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
@@ -7,9 +7,9 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.concurrent.duration.DurationInt
 
-class GetRandomNumberSimulation extends Simulation {
+class GetGoogleTestResults extends Simulation {
   val httpProtocol: HttpProtocolBuilder = http
-    .baseUrl("http://localhost:8080")
+    .baseUrl("http://google.de")
     .inferHtmlResources()
     .acceptHeader("text/html,application/xhtml+xml,application/xml,application/json")
     .acceptLanguageHeader("de,en-US;q=0.7,en;q=0.3")
@@ -17,12 +17,12 @@ class GetRandomNumberSimulation extends Simulation {
     .userAgentHeader("Gatling")
 
   val scn: ScenarioBuilder = scenario("Request Random Number")
-    .repeat(10) {
+    .feed(csv("searchwords.csv").random)
+    .repeat(3) {
       exec(
         http("Simple Get")
-          .get("/test")
-      )
-      .pause(1.second)
+          .get("/search?q=${word}")
+      ).pause(1.seconds)
     }
 
   setUp(
