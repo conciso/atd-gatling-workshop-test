@@ -1,0 +1,7 @@
+version: '3'
+services:
+  service:
+    image: lpradel/atd-gatling-ws-service
+    ports:
+      - "8080:8080"
+      - "8787:8787"
